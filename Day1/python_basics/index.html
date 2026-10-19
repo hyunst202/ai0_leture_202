@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python 기초 실습 결과</title>
+  <style>
+    :root { color-scheme: light; --ink: #182230; --muted: #536273; --line: #d9e1e8; --accent: #176b57; --panel: #f4f7f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #edf2f2; color: var(--ink); font: 16px/1.6 system-ui, "Malgun Gothic", sans-serif; }
+    header { background: #123d35; color: white; padding: 32px max(22px, calc((100% - 960px) / 2)); }
+    header h1 { margin: 0 0 6px; font-size: clamp(1.6rem, 4vw, 2.2rem); }
+    header p { margin: 0; color: #d5e8e2; }
+    main { max-width: 960px; margin: 24px auto; padding: 0 18px 48px; }
+    section { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin: 16px 0; box-shadow: 0 4px 16px #1e3b3510; }
+    h2 { margin: 0 0 12px; font-size: 1.25rem; }
+    .hint { color: var(--muted); margin: 0 0 12px; }
+    pre { overflow-x: auto; background: #14221f; color: #e5f3ed; border-radius: 9px; padding: 16px; margin: 10px 0 0; font: 14px/1.65 Consolas, "D2Coding", monospace; }
+    code { font-family: Consolas, "D2Coding", monospace; }
+    .game { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; }
+    input, button { font: inherit; border-radius: 8px; padding: 9px 12px; }
+    input { border: 1px solid #aebbc3; width: 150px; }
+    button { border: 0; color: white; background: var(--accent); cursor: pointer; }
+    button:hover { background: #0d5141; }
+    button.secondary { background: #50616d; }
+    #message { min-height: 1.6em; font-weight: 600; margin: 12px 0 0; }
+    .tag { display: inline-block; background: #e4f2ed; color: #155947; border-radius: 20px; padding: 2px 10px; font-size: .85rem; margin: 0 5px 5px 0; }
+    footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 0 18px 28px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Python 기초 실습</h1>
+    <p>변수와 연산, 출력, 반복문, 조건문을 예제 결과로 복습합니다.</p>
+  </header>
+  <main>
+    <section>
+      <h2>이번 실습에서 다루는 기술</h2>
+      <span class="tag">Python 기초 문법</span><span class="tag">변수와 사칙연산</span>
+      <span class="tag">for 중첩 반복문</span><span class="tag">f-string</span>
+      <span class="tag">조건문과 입력</span><span class="tag">random</span>
+      <p class="hint">아래 결과는 파이썬 실습 코드를 따라 브라우저에서 확인할 수 있도록 준비한 예시입니다. 숫자 게임은 이 페이지 안에서 직접 실행됩니다.</p>
+    </section>
+
+    <section>
+      <h2>1. 변수와 사칙연산</h2>
+      <p class="hint"><code>number1 = 100</code>, <code>number2 = 200</code>일 때의 결과</p>
+      <pre>number1 + number2 = 300
+number1 - number2 = -100
+number1 * number2 = 20000
+number1 / number2 = 0.5</pre>
+    </section>
+
+    <section>
+      <h2>2. print로 구구단 출력</h2>
+      <pre>2 x 1 = 2
+2 x 2 = 4
+2 x 3 = 6
+2 x 4 = 8</pre>
+    </section>
+
+    <section>
+      <h2>3. 중첩 반복문과 f-string</h2>
+      <p class="hint">2단부터 4단까지 1~4를 곱한 결과</p>
+      <pre>2 x 1 = 2    2 x 2 = 4    2 x 3 = 6    2 x 4 = 8
+3 x 1 = 3    3 x 2 = 6    3 x 3 = 9    3 x 4 = 12
+4 x 1 = 4    4 x 2 = 8    4 x 3 = 12   4 x 4 = 16</pre>
+      <p class="hint">반복문을 사용하면 같은 형식의 계산과 출력을 짧은 코드로 만들 수 있습니다.</p>
+    </section>
+
+    <section>
+      <h2>4. 숫자 맞히기 게임</h2>
+      <p class="hint">브라우저가 1~100 사이 숫자를 정했습니다. 숫자를 입력하고 맞혀 보세요.</p>
+      <div class="game">
+        <label for="guess">내 추측</label>
+        <input id="guess" type="number" min="1" max="100" placeholder="1~100" autocomplete="off">
+        <button id="submit">확인</button>
+        <button id="restart" class="secondary">새 게임</button>
+      </div>
+      <p id="message" role="status" aria-live="polite">숫자를 입력하고 확인을 누르세요.</p>
+    </section>
+
+    <section>
+      <h2>5. 직접 풀어보기</h2>
+      <ol>
+        <li>두 수를 입력받아 합계와 평균을 출력해 보세요.</li>
+        <li>원하는 숫자의 단을 입력받아 1부터 9까지 출력해 보세요.</li>
+        <li>1부터 100 중 짝수만 출력해 보세요.</li>
+        <li>숫자 맞히기 게임에 시도 횟수 제한을 추가해 보세요.</li>
+      </ol>
+    </section>
+  </main>
+  <footer>이 페이지는 별도 서버 없이 HTML 파일을 브라우저에서 열어 볼 수 있습니다.</footer>
+  <script>
+    (() => {
+      let answer;
+      let attempts;
+      let finished;
+      const field = document.querySelector('#guess');
+      const message = document.querySelector('#message');
+
+      function newGame() {
+        answer = Math.floor(Math.random() * 100) + 1;
+        attempts = 0;
+        finished = false;
+        field.value = '';
+        message.textContent = '새 게임입니다. 숫자를 입력하고 확인을 누르세요.';
+        field.focus();
+      }
+
+      function submitGuess() {
+        if (finished) return;
+        const guess = Number(field.value);
+        if (!Number.isInteger(guess) || guess < 1 || guess > 100) {
+          message.textContent = '1부터 100 사이의 정수를 입력해 주세요.';
+          field.focus();
+          return;
+        }
+        attempts += 1;
+        if (guess < answer) message.textContent = '더 큰 숫자입니다.';
+        else if (guess > answer) message.textContent = '더 작은 숫자입니다.';
+        else {
+          message.textContent = `정답입니다! ${attempts}번 만에 맞혔어요.`;
+          finished = true;
+        }
+        field.select();
+      }
+
+      document.querySelector('#submit').addEventListener('click', submitGuess);
+      document.querySelector('#restart').addEventListener('click', newGame);
+      field.addEventListener('keydown', event => {
+        if (event.key === 'Enter') submitGuess();
+      });
+      newGame();
+    })();
+  </script>
+</body>
+</html>
