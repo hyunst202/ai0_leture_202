@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="간단하게 기록하고 댓글로 이야기를 나누는 note-demo 게시판">
+  <title>note-demo · 작은 기록</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="note-demo 홈"><span class="brand-icon" aria-hidden="true">n.</span>note-demo</a>
+      <nav aria-label="주 메뉴">
+        <span id="current-user" class="user-label"></span>
+        <button id="nav-board" type="button" class="quiet">게시판</button>
+        <button id="nav-rules" type="button" class="quiet" hidden>규칙 관리</button>
+        <button id="nav-auth" type="button" class="primary small">로그인</button>
+      </nav>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section id="board-view" aria-labelledby="board-title">
+      <div class="section-heading"><div><p class="eyebrow">작은 기록, 이어지는 이야기</p><h1 id="board-title">게시판</h1></div><button id="new-post" class="primary" type="button">글쓰기</button></div>
+      <div class="card board-card">
+        <div class="list-caption"><span>전체 글</span><span id="post-count" class="muted">불러오는 중</span></div>
+        <div class="table-scroll"><table><caption class="sr-only">게시글 목록</caption><thead><tr><th scope="col">제목</th><th scope="col">작성자</th><th scope="col">작성일</th></tr></thead><tbody id="post-list"></tbody></table></div>
+        <p id="empty-posts" class="empty" hidden>아직 기록이 없습니다. 첫 번째 이야기를 남겨보세요.</p>
+        <nav id="pagination" class="pagination" aria-label="게시글 페이지"></nav>
+      </div>
+      <section id="selection" class="card selection" aria-label="선택한 게시글 또는 작성 폼" hidden></section>
+    </section>
+    <section id="auth-view" class="card auth-card" aria-label="계정" hidden></section>
+    <section id="rules-view" aria-labelledby="rules-title" hidden>
+      <div class="section-heading"><div><p class="eyebrow">편안한 대화를 위한 설정</p><h1 id="rules-title">마스킹 규칙</h1></div><button id="rules-back" class="secondary" type="button">게시판으로</button></div>
+      <div class="card"><p class="muted">등록한 키워드는 글 제목·본문·댓글에서 ***로 표시됩니다.</p><form id="rule-form" class="inline-form"><div class="grow"><label for="rule-keyword">추가할 키워드</label><input id="rule-keyword" name="keyword" required autocomplete="off" maxlength="200" placeholder="키워드를 입력하세요"></div><button type="submit" class="primary">추가</button></form><ul id="rule-list" class="rule-list"></ul></div>
+    </section>
+    <noscript><p class="notice">이 게시판은 JavaScript가 필요합니다. 브라우저 설정에서 활성화해주세요.</p></noscript>
+  </main>
+  <footer>note-demo <span aria-hidden="true">·</span> 교육용 게시판 / 비밀번호 찾기는 데모 기능입니다.</footer>
+</body>
+</html>
+

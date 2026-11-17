@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f0">
+  <meta name="description" content="쇼핑몰 상품 조회로 직접 비교하는 FastAPI 동기·비동기 실험실">
+  <title>Slowroom — 동기와 비동기 실험실</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%232e5141'/%3E%3Cpath d='M10 24h20M14 19h12M18 14h4' stroke='%23e9f1db' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Slowroom 실험실 홈"><span class="brand-mark" aria-hidden="true">s.</span>slowroom<span class="brand-dot">®</span></a>
+    <span class="header-caption">일상 속에서 배우는 비동기</span>
+    <a class="docs-link" href="/docs" target="_blank" rel="noopener">API 문서 <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main>
+    <section class="page-heading">
+      <div><p class="eyebrow"><span class="live-dot"></span> DAY 7 <span class="eyebrow-divider">/</span> CONCURRENCY LAB</p><h1>같은 페이지, 다른 기다림.</h1><p class="intro">상품 정보를 불러오는 짧은 순간, 서버에서는 어떤 일이 일어날까요?</p></div>
+      <div class="lesson-stamp"><span>오늘의 실험</span><strong>동기 <span>vs.</span> 비동기</strong><small>Python · FastAPI · asyncio</small></div>
+    </section>
+
+    <div class="workspace">
+      <aside class="controls panel" aria-labelledby="control-title">
+        <div class="section-top"><h2 id="control-title">실험 설정</h2><span class="small-label">01 — SETUP</span></div>
+        <fieldset id="mode-fieldset"><legend>처리 방식</legend><div id="mode-options" class="mode-options"></div></fieldset>
+        <fieldset id="visitor-fieldset"><legend>동시에 접속하는 방문자</legend><div class="segmented"><label><input type="radio" name="visitors" value="1" checked><span>1명</span></label><label><input type="radio" name="visitors" value="3"><span>3명</span></label></div></fieldset>
+        <label class="select-label" for="scale">외부 서비스 대기 시간</label>
+        <select id="scale"><option value="1">기본 · 1.0배</option><option value="0.5">빠르게 · 0.5배</option><option value="0.25">아주 빠르게 · 0.25배</option><option value="1.5">느리게 · 1.5배</option></select>
+        <p class="expected" id="expected">설정을 불러오는 중…</p>
+        <button id="run" class="primary-button" disabled><span aria-hidden="true">↻</span> 상품 정보 불러오기</button>
+        <button id="compare" class="secondary-button" disabled>네 가지 방식 순서대로 비교 <span aria-hidden="true">↗</span></button>
+        <p class="control-footnote">로컬 모의 서비스 · 외부 API / 결제 없음<br>정확한 비교를 위해 서버 워커 1개로 실행합니다.</p>
+      </aside>
+
+      <div class="results-area">
+        <section class="product panel" aria-labelledby="product-title">
+          <div class="product-art" role="img" aria-label="크림색 갓과 녹색 받침대가 있는 오브제 데스크 램프 일러스트">
+            <span class="art-caption">OBJECTS FOR A SLOW DAY</span>
+            <svg viewBox="0 0 360 250" aria-hidden="true"><defs><radialGradient id="glow"><stop stop-color="#f8e7aa" stop-opacity=".7"/><stop offset="1" stop-color="#f8e7aa" stop-opacity="0"/></radialGradient><linearGradient id="shade" x2="1" y2=".4"><stop stop-color="#e5d7b7"/><stop offset=".55" stop-color="#fbf2d8"/><stop offset="1" stop-color="#d2c29e"/></linearGradient><linearGradient id="stem"><stop stop-color="#305242"/><stop offset=".5" stop-color="#66816a"/><stop offset="1" stop-color="#345240"/></linearGradient></defs><ellipse cx="180" cy="223" rx="98" ry="12" fill="#b3b4a0" opacity=".25"/><circle cx="180" cy="146" r="100" fill="url(#glow)"/><path d="M184 196c27 21 86 9 102 35" fill="none" stroke="#86917d" stroke-width="2"/><ellipse cx="180" cy="211" rx="52" ry="11" fill="#304c3c"/><path d="M128 207q5-15 52-15t52 15" fill="#45634c"/><ellipse cx="180" cy="204" rx="48" ry="9" fill="#58735b"/><path d="M174 113h12v87q-6 5-12 0z" fill="url(#stem)"/><path d="M142 46q38-14 76 0l36 79q-74 31-148 0z" fill="url(#shade)"/><ellipse cx="180" cy="125" rx="74" ry="13" fill="#b9aa87"/><ellipse cx="180" cy="122" rx="70" ry="10" fill="#f4e8c4"/><ellipse cx="180" cy="46" rx="38" ry="5" fill="#eee3c9"/><path d="M155 51l-20 68m37-68-6 72m24-72 8 72m8-72 22 68" stroke="#d5c6a4" opacity=".4" fill="none"/></svg>
+            <span class="art-number">SR — 024</span>
+          </div>
+          <div class="product-copy"><p class="eyebrow muted">LIVING / LIGHTING</p><h2 id="product-title">오브제 데스크 램프</h2><p class="product-description">하루의 속도를 낮추는 작은 빛.<br>어느 공간에나 편안하게 스며드는 조명.</p><p class="price">42,000<span>원</span></p><div class="product-tags"><span>웜 화이트</span><span>상품 상세 페이지 예제</span></div></div>
+          <div class="product-callout"><span aria-hidden="true">↙</span><p>재고, 리뷰, 배송.<br>이 세 정보를 불러옵니다.</p></div>
+        </section>
+
+        <section class="metrics" aria-label="실험 측정값">
+          <div class="metric panel"><span class="metric-label">전체 조회 시간 <span aria-hidden="true">◷</span></span><p><strong id="elapsed">—</strong><span>초</span></p><small id="elapsed-note">실행 버튼을 눌러 시작하세요</small></div>
+          <div class="metric panel"><span class="metric-label">완료된 방문자 <span aria-hidden="true">↗</span></span><p><strong id="completed">0</strong><span id="visitor-total">/ 1명</span></p><small id="completion-note">같은 상품 페이지를 동시에 요청</small></div>
+          <div class="metric panel health-metric"><span class="metric-label">다른 요청의 최대 대기 <span class="status-dot" id="health-dot"></span></span><p><strong id="health-latency">—</strong><span>ms</span></p><small id="health-note">/health 응답을 함께 측정합니다</small></div>
+        </section>
+
+        <section class="panel execution" aria-labelledby="execution-title">
+          <div class="section-top"><h2 id="execution-title">요청 타임라인</h2><span id="run-status" class="status-pill" role="status">실행 대기</span></div>
+          <div class="timeline-legend"><span><i class="stock-color"></i>재고 <b id="stock-delay">1.2s</b></span><span><i class="reviews-color"></i>리뷰 <b id="reviews-delay">1.8s</b></span><span><i class="delivery-color"></i>배송 <b id="delivery-delay">1.0s</b></span><span class="legend-hint">서버에서 실제 측정한 실행 구간</span></div>
+          <div id="timeline" class="timeline"><div class="timeline-empty"><span aria-hidden="true">≋</span><p>기다림의 모양을 확인해 보세요.</p><small>실행이 끝나면 방문자별 조회 구간이 표시됩니다.</small></div></div>
+          <div class="service-results" id="service-results" aria-label="첫 번째 방문자의 상품 조회 결과"><article><span>재고</span><strong>아직 조회 전</strong><small>창고 시스템 연결 대기</small></article><article><span>리뷰</span><strong>아직 조회 전</strong><small>리뷰 서비스 연결 대기</small></article><article><span>배송</span><strong>아직 조회 전</strong><small>배송 서비스 연결 대기</small></article></div>
+          <div class="notice" id="notice" role="status">실제 요청을 보내고 응답 시간을 측정합니다. 브라우저의 애니메이션은 서버가 멈춰도 계속 움직입니다.</div>
+        </section>
+
+        <section class="panel explanation"><div class="section-top"><h2>지금 실행하는 코드</h2><span id="code-tag" class="small-label">GATHER</span></div><pre><code id="mode-code">설정을 불러오는 중…</code></pre><p id="mode-note"></p></section>
+
+        <section class="panel history" aria-labelledby="history-title"><div class="section-top"><h2 id="history-title">실험 기록</h2><button id="clear-history" class="text-button" disabled>기록 지우기</button></div><div class="table-scroll"><table><caption class="sr-only">이 탭에서 실행한 최근 12회의 실험 기록</caption><thead><tr><th scope="col">처리 방식</th><th scope="col">설정</th><th scope="col">전체 시간</th><th scope="col">최대 응답 대기</th></tr></thead><tbody id="history-body"><tr class="empty-row"><td colspan="4">여러 방식을 실행하면 결과를 나란히 비교할 수 있어요.</td></tr></tbody></table></div></section>
+      </div>
+    </div>
+    <footer><span>slowroom lab <b>·</b> 기다리는 시간을 이해하는 실험</span><span>FastAPI + asyncio <span aria-hidden="true">↗</span></span></footer>
+    <noscript><p class="error-banner">실험 화면을 사용하려면 JavaScript를 켜 주세요. /docs에서 API를 직접 실행할 수도 있습니다.</p></noscript>
+  </main>
+</body>
+</html>
